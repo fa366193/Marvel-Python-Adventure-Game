@@ -1,0 +1,341 @@
+import time
+import random
+
+def start():
+    """
+    Infinity War is a survival adventure text game. Save the universe or lose half of the universe's population.
+    As Antman, you will attempt to retrieve your stone and help the Avengers beat Thanos.
+    This funtion starts the game. 
+    This adventure has 3 missions:
+    1. Retrieve the space stone by traveling back in time: player must choose the correct hallways to go through to find the stone
+    2. Fight with the Wakandans: The player must guess the correct number between 1 and 4 to reduce or enlarge size of Antman character and defeat the alien army 
+    3. Defeat Thanos: The player must make the correct choice to complete this level and finish the game.
+    Disclaimers/bugs: When you restart the game after completion, you are taken back to the loop on Mission 1.
+       You never really exit that loop, even though there is a break statement. 
+    """
+
+    print("""
+...Half of the population of the universe is in danger. Thanos is on his way to finding all the stones.
+Dr. Banner has found a way to send all Avengers back in time to retrieve the Infinity Stones before Thanos does.
+
+Bruce Banner presses the launch button. A black tunnel engulfs you on your way to the past.
+The light engulfs you as you enter the year 2012. The year of the infamous battle of New York. 
+
+...
+
+"All right, you're up, little buddy. Somewhere in here is our stone," Ironman says.
+
+You look up, give Ironman a thumbs up, and run along into the facility.
+
+...
+""")
+    
+    # Begin Space Stone Search
+    time.sleep(1)
+    level_1()
+    
+def end():
+    """
+    This funtion is called right before the player quites the game
+    """
+    print("\n\n***Exiting Game***")
+
+def win():
+    """
+    This function is called when a player succesfully completes the game. 
+    A player can restart or quit the game.
+    """
+    print("""\n\n...\n\n
+You run down the halways as fast as you can without being caught! But a STRIKE agent sees you!
+Just as he is about to catch you, A door explodes to your left!!!
+Ironman flies in and defeats the STRIKE agent for you causing an explosion.
+The ground shakes and everything goes dark.
+
+...
+
+"Hey wake up. Our time is almost up. We have to go suit up for the mission," Stark says.
+
+You look around and realize you were dreaming. You have not attempted the mission yet.
+
+...
+
+You're safe, but the fate of the universe isn't yet.
+    """)
+    running = True
+    # This loop stays active, until user enters a valid choice to continue or end the game.
+    while running:
+        # Creating antman options
+        options = [
+            "1. Restart game",
+            "2. Quit"
+        ]
+        
+        print("\nChoose wisely")
+        
+        # Loop through and print options
+        for option in options:
+            print(option)
+            time.sleep(1)
+            
+        # Convert list to lower case 
+        options = list_to_lower(options)
+        # Get user response
+        choice = input(prompt=">")
+        choice = choice.lower()
+
+        # Check the option the user chose and branch the game accordingly
+        if choice in options[0] or choice == "one":
+            running = False
+            welcome()
+        elif choice in options[1] or choice == "two":
+            running = False
+            end()
+        else:
+            print("\nInvalid entry")
+
+def lose(current_level):
+    """
+    This function is called every time a user fails the game. 
+    The user can replay the level, retstart the game, or quit the game.
+    The user must pass the current level as an arguement whenever you call this function
+    """
+    
+    print_separator()
+    print("YOU FAILED.")
+    print_separator()
+    
+    # This loop stays active, until user enters a valid choice to continue or end the game.
+    while True:
+        # Define player options
+        options = [
+            "1. Reattempt the mission",
+            "2. Return to Avengers quarters and restart the mission",
+            "3. Quit Game"
+        ]
+        
+        print("\nChoose wisely, the future of the universe depends on you")
+        
+        # Loop through and print options
+        for option in options:
+            print(option)
+            time.sleep(1)
+
+        # Convert list to lower case 
+        options = list_to_lower(options)
+        # Get user response 
+        choice = input(prompt=">")
+        choice = choice.lower()
+
+        # Check the option the user chose and branch the game accordingly
+        if choice in options[0] or choice == "one":
+            current_level()
+            break
+        elif choice in options[1] or choice == "two":
+            start()
+            break
+        elif choice in options[2] or choice == "three":
+            end()
+            break
+        else:
+            print("\nInvalid entry")
+    
+    
+def list_to_lower(list_items):
+    """Converts any given list to lower case and returns it"""
+    # Setting empty list
+    lower_case_list = []
+    
+    # Loop through given list and return lower case list 
+    for list_item in list_items:
+        lower_case_list.append(list_item.lower())
+
+    return lower_case_list
+
+
+def shuffle_list(list_items):
+    """Shuffles any given list and returns it"""
+    # Setting empty list
+    shuffled_list = []
+    # Setting index variable
+    index = 1
+    
+    # Shuffle list
+    random.shuffle(list_items)
+    
+    # Loop through given list, concatenate index and append to new list
+    for list_item in list_items:
+        shuffled_list.append(f"{index}. {list_item}")
+        index+=1
+        
+    # Return shuffled list
+    return shuffled_list
+
+
+def print_separator():
+    """Mutiply a string by integer to avoid repitition"""
+    
+    # multiply and print the '*' character
+    print(f"\n{'*'*50}\n")
+    
+    
+# Define Game levels
+def level_1():
+    """
+    This function is for the Stone mission. 
+    The player is expected to choose the right hallway to successfully complete the level.
+    The player has 2 tries, before they fail.
+    """
+    print("""\nYou are running out of time to find the space stone. 
+    There are two hallways. One to the left, and one to the right. You have 20 seconds
+
+    """)
+    
+    time_left = 20
+        
+    # This loop stays active for 3 attempts, until user enters a valid choice or loses the game.
+    while time_left > 0:
+        # Define player options
+        options = [
+            "Left",
+            "Right"
+        ]
+        
+        #Increment tries
+        time_left-=10
+        
+        print("Which hallway will you choose?")
+        
+        # Shuffle list
+        options = shuffle_list(options)
+        # Loop through and print options
+        for option in options:
+            print(option)
+            time.sleep(1)
+        
+        # Convert list to lower case for easier comparison
+        options = list_to_lower(options)
+        # Get user response 
+        choice = input(prompt=">")
+        choice = choice.lower()
+
+        # Check the option the user chose and branch the game accordingly
+        if choice in options[0] or choice == "one":
+            print(f"\nThis hallway is being watched by STRIKE! You run back to Ironman. You have {time_left}s left")
+            
+            if(time_left <= 0):
+                print("\nThe STRIKE officer walks into the hallway and takes you and Ironman hostage.")
+                lose(current_level = level_1)
+                break
+        elif choice in options[1] or choice == "two":
+            level_2()
+            break
+        else:
+            print(f"\nInvalid entry. You have {time}s left")
+            if(time_left <= 0):
+                print("\nThe STRIKE officer walks into the hallway and takes you and Ironman hostage.")
+                lose(current_level = level_1)
+                break
+        
+def level_2():
+    """
+    This function is for the Wakandan battle mission of the adventure. 
+    The player is expected to choose the right size for Antman to fight the battle against the alien army and win.
+    The player has 2 tries, before they fail.
+    """
+
+    print("""\n...\n\nYou make a run for the elevator\n\n...\n\n
+You get back to the Avengers tower and travel to Wakanda to help remove the Mindstone from Vision's head. Thanos' alien army descends.
+You gear up to join the fight. You need to choose the size you will reduce or enlarge to. There is only one right option for this mission. You must choose between 1 and 5.
+If you enter the wrong code 3 times, the alien army will defeat you.
+You must guess correctly. The fate of the universe depends on it.
+
+    """)
+    
+    tries = 0
+    
+    # Define elevator code
+    elevator_code = random.randint(1,5)
+        
+    # This loop stays active, until user enters a valid choice to continue or end the game.
+    while tries < 3:
+        #Increment tries
+        tries+=1
+        
+        print("Which size will you choose?")
+        choice = input(prompt=">")
+        try:
+            choice = int(choice)
+            
+            # Check the option the user chose and branch the game accordingly
+            if choice == elevator_code:
+                # Set exit condition for while loop
+                tries = 3
+                
+                print("""\nEnlarging\"SIZE ACHIEVED\"\n\nYou Press \"G\" to go to the battle ground\n\n... """)
+                
+                # Load level 3
+                level_3()
+            else:
+                if choice > elevator_code:
+                    print(f"""
+    \nShrinking... You have failed. Warning you have {3-tries} tries left.\nTry a smaller number.""")
+                else:
+                    print(f"""
+    \nShrinking... You have failed. Warning you have {3-tries} tries left.\nTry a bigger number""")
+
+                if(tries > 2):
+                    print("\nThe alien army takes over and you are defeated.")
+                    lose(current_level = level_2)
+        except:
+            print(f"\nInvalid entry. Enter a number between 1 and 5. Warning you have {3-tries} tries left.")
+            if(tries > 2):
+                print("\nThe alien army takes over and you are defeated.")
+                lose(current_level = level_2)
+    
+def level_3():
+    """
+    This function is for the third mission of the adventure. 
+    The user has to choose the right action to successfully defeat Thanos.
+    The player has 1 attempt, before they fail.
+    """
+    
+    # Defining player options
+    options = [
+        "1. Run away from Thanos",
+        "2. Find a weapon, stand your ground, and fight",
+        "3. Catch up with Groot about and hope the other Avengers win for you"
+    ]
+    
+    # Prompting user to make decision
+    print("""\nAs you exit headquarters you run into the battleground. The alien army breaks through Wakandan defenses, Thanos descending on the scene. 
+Thanos runs straight towards you.""")
+    time.sleep(1)
+    print("Take Action?")
+    time.sleep(1)
+    
+    # Loop through and print options
+    for option in options:
+        print(option)
+        time.sleep(1)
+        
+    # Convert list to lower case
+    options = list_to_lower(options)
+    # Get user response 
+    choice = input(prompt=">")
+    choice = choice.lower()
+
+    # Check the option the user chose and branch the game accordingly
+    if choice in options[0] or choice == "one":
+        win()
+    elif choice in options[1] or choice == "two":
+        print("\nThanos charges towards you and vanishes you with one snap.\n")
+        lose(current_level = level_3)
+    elif choice in options[2] or choice == "three":
+        print("\nYou face Thanos with wide eyes. The last thing you hear is Thanos laughing.\n")
+        lose(current_level = level_3)
+    else:
+        print("\nInvalid entry - For not following instructions, Thanos snaps and vanishes you.")
+        lose(current_level = level_3)
+    
+# Start the game
+start()
